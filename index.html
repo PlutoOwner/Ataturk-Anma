@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ebedi Saygı Anıtı - Parallax Versiyon</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
+    body {
+      font-family: 'Inter', sans-serif;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* 🔥 Parallax efektli arka plan */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: url('https://graph.org/file/77a0161dbfaa82a42394a-1015c0cfdca0311050.png') center/cover no-repeat;
+      animation: parallaxMove 60s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes parallaxMove {
+      0% { background-position: center top; }
+      50% { background-position: center bottom; }
+      100% { background-position: center top; }
+    }
+
+    /* Hafif karartma efekti */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.35);
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      backdrop-filter: blur(6px);
+    }
+
+    .carnation-effect {
+      position: fixed;
+      font-size: 2rem;
+      animation: flyUp 2s ease-out forwards;
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    @keyframes flyUp {
+      0% {opacity: 1; transform: translateY(0);}
+      100% {opacity: 0; transform: translateY(-150px);}
+    }
+
+    #carnationList::-webkit-scrollbar {
+      width: 6px;
+    }
+    #carnationList::-webkit-scrollbar-thumb {
+      background: #e30a17;
+      border-radius: 3px;
+    }
+
+    .bg-panel {
+      background: rgba(0, 0, 0, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container w-full max-w-3xl bg-panel rounded-xl shadow-2xl p-6 sm:p-10">
+    <header class="text-center mb-8">
+      <h1 class="text-3xl sm:text-4xl font-extrabold text-red-500 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">EBEDİ SAYGI VE MİNNETLE</h1>
+      <div class="h-[2px] w-20 bg-red-600 mx-auto my-3"></div>
+      <p class="text-gray-200">Ulu Önder Mustafa Kemal Atatürk'ün aziz hatırasına</p>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-3 mb-8">
+      <div class="bg-white/20 p-4 rounded-lg text-center">
+        <p id="totalCarnations" class="text-2xl font-bold">0</p>
+        <p class="text-sm text-gray-300">Toplam Bırakılan Karanfil</p>
+      </div>
+
+      <div class="md:col-span-2 space-y-3">
+        <input id="usernameInput" maxlength="20" placeholder="Adınızı girin (zorunlu)" class="w-full p-3 text-sm rounded-lg bg-white/20 border border-transparent focus:border-red-500 text-white placeholder-gray-300 outline-none">
+        <textarea id="messageInput" maxlength="100" placeholder="Kısa bir mesaj ekleyin (opsiyonel)" class="w-full p-3 text-sm rounded-lg bg-white/20 border border-transparent focus:border-red-500 text-white placeholder-gray-300 outline-none resize-y h-16"></textarea>
+      </div>
+
+      <button id="dropCarnationBtn" class="md:col-span-3 flex items-center justify-center p-3 text-lg font-semibold rounded-lg bg-white text-gray-900 hover:bg-gray-200 transition">
+        🌹 Karanfil Bırak
+      </button>
+    </div>
+
+    <section>
+      <h2 class="text-xl font-bold mb-3 text-red-500">Saygılarını Sunanlar</h2>
+      <div id="carnationList" class="max-h-96 overflow-y-auto bg-white/5 p-4 rounded-lg space-y-3 border-t border-red-500/40"></div>
+    </section>
+  </div>
+
+  <script>
+    const usernameInput = document.getElementById("usernameInput");
+    const messageInput = document.getElementById("messageInput");
+    const dropCarnationBtn = document.getElementById("dropCarnationBtn");
+    const totalCarnationsEl = document.getElementById("totalCarnations");
+    const carnationListEl = document.getElementById("carnationList");
+
+    let carnations = JSON.parse(localStorage.getItem("carnations") || "[]");
+
+    function saveAndRender() {
+      localStorage.setItem("carnations", JSON.stringify(carnations));
+      renderList();
+    }
+
+    function renderList() {
+      carnationListEl.innerHTML = "";
+      if (carnations.length === 0) {
+        carnationListEl.innerHTML = '<p class="text-center text-gray-400">İlk karanfili bırakan siz olun.</p>';
+      } else {
+        totalCarnationsEl.textContent = carnations.length;
+        carnations.slice().reverse().forEach(item => {
+          const el = document.createElement("div");
+          el.className = "p-3 rounded-lg bg-white/10 border-l-4 border-red-500";
+          el.innerHTML = `
+            <div class="flex justify-between items-center">
+              <div class="flex items-center gap-2"><span>🌹</span><span class="font-semibold">${item.username}</span></div>
+              <span class="text-xs text-gray-400">${item.time}</span>
+            </div>
+            ${item.message ? `<p class="text-sm italic text-gray-300 mt-1">"${item.message}"</p>` : ""}
+          `;
+          carnationListEl.appendChild(el);
+        });
+      }
+    }
+
+    function createCarnationEffect() {
+      const el = document.createElement("div");
+      el.className = "carnation-effect";
+      el.textContent = "🌹";
+      el.style.left = (window.innerWidth / 2 - 10 + Math.random() * 50 - 25) + "px";
+      el.style.top = (window.innerHeight - 150) + "px";
+      document.body.appendChild(el);
+      el.addEventListener("animationend", () => el.remove());
+    }
+
+    dropCarnationBtn.addEventListener("click", () => {
+      const username = usernameInput.value.trim();
+      const message = messageInput.value.trim();
+      if (username.length < 2) {
+        usernameInput.classList.add("border-red-500");
+        setTimeout(() => usernameInput.classList.remove("border-red-500"), 1500);
+        return;
+      }
+      const now = new Date();
+      const time = now.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
+      carnations.push({ username, message, time });
+      usernameInput.value = "";
+      messageInput.value = "";
+      createCarnationEffect();
+      saveAndRender();
+    });
+
+    renderList();
+  </script>
+</body>
+</html>
