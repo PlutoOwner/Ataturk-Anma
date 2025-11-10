@@ -11,7 +11,7 @@ Ziyaretçiler, anıta **karanfil bırakabilir**, **isimlerini** ve **mesajların
 ---
 
 ## 🖼️ Önizleme
-![Site Önizlemesi](https://te.legra.ph/file/2cef1df6533f3a82fdbab-c22a80348e85c1ddef.jpg)
+![Site Önizlemesi](Ekran görüntüsü.jpeg)
 
 ---
 
