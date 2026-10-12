@@ -6,7 +6,7 @@ Ziyaretçiler, anıta **karanfil bırakabilir**, **isimlerini** ve **mesajların
 ---
 
 ## 🌐 Canlı Site
-🔗 [https://9000-firebase-atatrk-anma-1762722896579.cluster-c23mj7ubf5fxwq6nrbev4ugaxa.cloudworkstations.dev/?monospaceUid=386014&embedded=0](https://9000-firebase-atatrk-anma-1762722896579.cluster-c23mj7ubf5fxwq6nrbev4ugaxa.cloudworkstations.dev/?monospaceUid=386014&embedded=0)
+🔗 [[https://9000-firebase-atatrk-anma-1762722896579.cluster-c23mj7ubf5fxwq6nrbev4ugaxa.cloudworkstations.dev/?monospaceUid=386014&embedded=0](https://9000-firebase-atatrk-anma-1762722896579.cluster-c23mj7ubf5fxwq6nrbev4ugaxa.cloudworkstations.dev/?monospaceUid=386014&embedded=0)](https://plutoowner.github.io/Ataturk-Anma/)
 
 ---
 
