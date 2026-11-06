@@ -175,11 +175,25 @@
     setTimeout(() => openShare(username, message, k), 900);   // karanfiller uçtuktan sonra
   });
 
-  // ---------- Paylaşım kartı (1080×1920, hikâye boyutu) ----------
+  // ---------- Paylaşım görseli: hikâye (1080×1920) ----------
   const SITE = "plutoowner.github.io/Ataturk-Anma";
-  const BG_URL = "atatürk.png";
+  const SITE_URL = `https://${SITE}/`;
   const modal = $("shareModal");
-  let shareFile = null, shareUrl = null;
+  const share = { name: "", message: "", mum: false, file: null, url: null };
+
+  // Fotoğraf paylasim-foto.js içinde gömülü; sadece ilk paylaşımda yüklenir
+  let fotoPromise = null;
+  function loadFoto() {
+    if (window.PAYLASIM_FOTO) return Promise.resolve(window.PAYLASIM_FOTO);
+    fotoPromise ||= new Promise((ok, fail) => {
+      const sc = document.createElement("script");
+      sc.src = "paylasim-foto.js";
+      sc.onload = () => window.PAYLASIM_FOTO ? ok(window.PAYLASIM_FOTO) : fail(new Error("foto yok"));
+      sc.onerror = () => { fotoPromise = null; fail(new Error("paylasim-foto.js yüklenemedi")); };
+      document.head.appendChild(sc);
+    });
+    return fotoPromise;
+  }
 
   const loadImg = src => new Promise((ok, fail) => {
     const im = new Image();
@@ -199,114 +213,132 @@
     if (line) lines.push(line);
     return lines;
   }
+  const spaced = (ctx, px) => { if ("letterSpacing" in ctx) ctx.letterSpacing = `${px}px`; };
 
-  function spaced(ctx, px) { if ("letterSpacing" in ctx) ctx.letterSpacing = `${px}px`; }
+  function drawCandle(ctx, cx, top, s = 1) {
+    let h = ctx.createRadialGradient(cx, top + 35 * s, 0, cx, top + 35 * s, 110 * s);
+    h.addColorStop(0, "rgba(255,170,60,.35)"); h.addColorStop(1, "rgba(255,170,60,0)");
+    ctx.fillStyle = h; ctx.fillRect(cx - 120 * s, top - 80 * s, 240 * s, 240 * s);
+    const body = ctx.createLinearGradient(cx - 18 * s, 0, cx + 18 * s, 0);
+    body.addColorStop(0, "#cdb894"); body.addColorStop(.45, "#f6ead5"); body.addColorStop(1, "#d9c6a3");
+    ctx.fillStyle = body; ctx.fillRect(cx - 18 * s, top + 60 * s, 36 * s, 70 * s);
+    ctx.fillStyle = "#3a2a1a"; ctx.fillRect(cx - 1.5 * s, top + 50 * s, 3 * s, 12 * s);
+    const f = ctx.createRadialGradient(cx, top + 40 * s, 2, cx, top + 30 * s, 30 * s);
+    f.addColorStop(0, "#fff8e0"); f.addColorStop(.3, "#ffd35a"); f.addColorStop(.75, "#ff8a1c"); f.addColorStop(1, "rgba(255,80,0,0)");
+    ctx.fillStyle = f;
+    ctx.beginPath(); ctx.ellipse(cx, top + 28 * s, 13 * s, 26 * s, 0, 0, Math.PI * 2); ctx.fill();
+  }
 
-  async function drawCard(name, message, withBg, mum) {
+  async function drawCard({ name, message, mum }, withBg) {
     const W = 1080, H = 1920;
+    const story = true;
     const c = document.createElement("canvas");
     c.width = W; c.height = H;
     const ctx = c.getContext("2d");
     const SERIF = '"Cormorant Garamond", Georgia, serif';
-    const SANS = 'Inter, system-ui, sans-serif';
+    const SANS = "Inter, system-ui, sans-serif";
 
     ctx.fillStyle = "#0b0907";
     ctx.fillRect(0, 0, W, H);
 
+    // Fotoğraf: genişliğe sığdır, yüz üst bölümde kalsın
     if (withBg) {
-      const bg = await loadImg(BG_URL);
+      const bg = await loadImg(await loadFoto());
+      const scale = W / bg.width;
+      const y = story ? 0 : -60;
       ctx.save();
-      ctx.globalAlpha = .75;
-      ctx.filter = "grayscale(.2) sepia(.25)";
-      ctx.drawImage(bg, -110, 40, 1300, 1300);
+      ctx.filter = "contrast(1.05) brightness(.92)";
+      ctx.drawImage(bg, 0, y, W, bg.height * scale);
       ctx.restore();
     }
-    // Üst ve alt kararma (görseldeki yazıyı da örter)
-    let g = ctx.createLinearGradient(0, 0, 0, 320);
-    g.addColorStop(0, "rgba(11,9,7,.85)"); g.addColorStop(1, "rgba(11,9,7,0)");
-    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 320);
-    g = ctx.createLinearGradient(0, 640, 0, 1080);
-    g.addColorStop(0, "rgba(11,9,7,0)"); g.addColorStop(1, "#0b0907");
-    ctx.fillStyle = g; ctx.fillRect(0, 640, W, H - 640);
+
+    // Kararmalar: üstte ince, altta yazının okunacağı kadar güçlü
+    let g = ctx.createLinearGradient(0, 0, 0, 260);
+    g.addColorStop(0, "rgba(11,9,7,.8)"); g.addColorStop(1, "rgba(11,9,7,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, 260);
+    const fadeFrom = story ? 820 : 640, fadeTo = story ? 1220 : 930;
+    g = ctx.createLinearGradient(0, fadeFrom, 0, fadeTo);
+    g.addColorStop(0, "rgba(11,9,7,0)"); g.addColorStop(1, "rgba(11,9,7,.96)");
+    ctx.fillStyle = g; ctx.fillRect(0, fadeFrom, W, H - fadeFrom);
+    ctx.fillStyle = "rgba(11,9,7,.96)"; ctx.fillRect(0, fadeTo, W, H - fadeTo);
 
     ctx.textAlign = "center";
     ctx.textBaseline = "alphabetic";
+    const cx = W / 2;
 
     // Üst etiket
     ctx.fillStyle = "#d8c3a0";
-    ctx.font = `500 30px ${SANS}`;
+    ctx.font = `500 ${story ? 30 : 26}px ${SANS}`;
     spaced(ctx, 9);
-    ctx.fillText("10 KASIM · 09.05", W / 2, 150);
+    ctx.fillText("10 KASIM · 09.05", cx, story ? 140 : 80);
     spaced(ctx, 0);
 
-    if (mum) {
-      // Mum: hale, gövde, fitil, alev
-      const cx = W / 2;
-      let h = ctx.createRadialGradient(cx, 1095, 0, cx, 1095, 110);
-      h.addColorStop(0, "rgba(255,170,60,.35)"); h.addColorStop(1, "rgba(255,170,60,0)");
-      ctx.fillStyle = h; ctx.fillRect(cx - 120, 980, 240, 240);
-      const body = ctx.createLinearGradient(cx - 18, 0, cx + 18, 0);
-      body.addColorStop(0, "#cdb894"); body.addColorStop(.45, "#f6ead5"); body.addColorStop(1, "#d9c6a3");
-      ctx.fillStyle = body; ctx.fillRect(cx - 18, 1120, 36, 70);
-      ctx.fillStyle = "#3a2a1a"; ctx.fillRect(cx - 1.5, 1110, 3, 12);
-      const f = ctx.createRadialGradient(cx, 1100, 2, cx, 1090, 30);
-      f.addColorStop(0, "#fff8e0"); f.addColorStop(.3, "#ffd35a"); f.addColorStop(.75, "#ff8a1c"); f.addColorStop(1, "rgba(255,80,0,0)");
-      ctx.fillStyle = f;
-      ctx.beginPath(); ctx.ellipse(cx, 1088, 13, 26, 0, 0, Math.PI * 2); ctx.fill();
-    } else {
-      const sym = document.getElementById("karanfil").innerHTML;
-      const flower = await loadImg("data:image/svg+xml;charset=utf-8," +
-        encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 120">${sym}</svg>`));
-      ctx.drawImage(flower, W / 2 - 34, 1060, 68, 128);
+    // Konumlar
+    const L = story
+      ? { icon: 1090, t1: 1330, t2: 1430, tSize: 104, rule: 1470, name: 1560, sub: 1612, msg: 1700, msgLines: 2, dates: 1830, url: 1885 }
+      : { icon: null, t1: 1000, t2: null, tSize: 76, rule: 1040, name: 1115, sub: 1160, msg: 1228, msgLines: 1, dates: 1290, url: 1328 };
+
+    // Karanfil ya da mum (sadece hikâyede)
+    if (L.icon) {
+      if (mum) drawCandle(ctx, cx, L.icon - 60);
+      else {
+        const sym = document.getElementById("karanfil").innerHTML;
+        const flower = await loadImg("data:image/svg+xml;charset=utf-8," +
+          encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 120">${sym}</svg>`));
+        ctx.drawImage(flower, cx - 34, L.icon - 60, 68, 128);
+      }
     }
 
     // Başlık
     ctx.fillStyle = "#f4efe7";
-    ctx.font = `700 104px ${SERIF}`;
-    ctx.fillText("Ebedi Saygı", W / 2, 1300);
-    ctx.fillText("ve Minnetle", W / 2, 1400);
+    ctx.font = `700 ${L.tSize}px ${SERIF}`;
+    if (L.t2) { ctx.fillText("Ebedi Saygı", cx, L.t1); ctx.fillText("ve Minnetle", cx, L.t2); }
+    else ctx.fillText("Ebedi Saygı ve Minnetle", cx, L.t1);
 
     ctx.fillStyle = "#e30a17";
-    ctx.fillRect(W / 2 - 60, 1440, 120, 3);
+    ctx.fillRect(cx - 60, L.rule, 120, 3);
 
     // İsim
     ctx.fillStyle = "#f4efe7";
-    ctx.font = `600 54px ${SANS}`;
-    ctx.fillText(name, W / 2, 1535);
+    ctx.font = `600 ${story ? 54 : 48}px ${SANS}`;
+    ctx.fillText(name, cx, L.name);
     ctx.fillStyle = "#b7ad9f";
-    ctx.font = `400 34px ${SANS}`;
-    ctx.fillText(mum ? "bir mum yaktı" : "bir karanfil bıraktı", W / 2, 1590);
+    ctx.font = `400 ${story ? 34 : 30}px ${SANS}`;
+    ctx.fillText(mum ? "bir mum yaktı" : "bir karanfil bıraktı", cx, L.sub);
 
-    // Mesaj (en fazla 2 satır)
+    // Mesaj
     if (message) {
       ctx.fillStyle = "#e6ddd0";
-      ctx.font = `italic 500 50px ${SERIF}`;
+      ctx.font = `italic 500 ${story ? 50 : 44}px ${SERIF}`;
       let lines = wrap(ctx, `“${message}”`, 880);
-      if (lines.length > 2) { lines = lines.slice(0, 2); lines[1] = lines[1].replace(/\s*\S*$/, "…”"); }
-      lines.forEach((l, i) => ctx.fillText(l, W / 2, 1685 + i * 60));
+      if (lines.length > L.msgLines) {
+        lines = lines.slice(0, L.msgLines);
+        lines[L.msgLines - 1] = lines[L.msgLines - 1].replace(/\s*\S*$/, "…”");
+      }
+      lines.forEach((l, i) => ctx.fillText(l, cx, L.msg + i * 60));
     }
 
-    // Tarih: 1881 — 193∞
-    ctx.font = `500 44px ${SANS}`;
+    // 1881 — 193∞
+    ctx.font = `500 ${story ? 44 : 34}px ${SANS}`;
     spaced(ctx, 8);
-    const left = "1881 — 193", inf = "∞";
+    const left = "1881 — 193";
     const lw = ctx.measureText(left).width;
     spaced(ctx, 0);
-    const iw = ctx.measureText(inf).width;
-    const x0 = W / 2 - (lw + iw) / 2;
+    const iw = ctx.measureText("∞").width;
+    const x0 = cx - (lw + iw) / 2;
     ctx.textAlign = "left";
     spaced(ctx, 8);
     ctx.fillStyle = "#d8c3a0";
-    ctx.fillText(left, x0, 1830);
+    ctx.fillText(left, x0, L.dates);
     spaced(ctx, 0);
     ctx.fillStyle = "#ff4d57";
-    ctx.fillText(inf, x0 + lw, 1830);
+    ctx.fillText("∞", x0 + lw, L.dates);
 
     // Site adresi
     ctx.textAlign = "center";
     ctx.fillStyle = "#8f857a";
-    ctx.font = `500 28px ${SANS}`;
-    ctx.fillText(SITE, W / 2, 1885);
+    ctx.font = `500 ${story ? 28 : 24}px ${SANS}`;
+    ctx.fillText(SITE, cx, L.url);
 
     return new Promise((ok, fail) => {
       try { c.toBlob(b => b ? ok(b) : fail(new Error("boş")), "image/png"); }
@@ -314,36 +346,47 @@
     });
   }
 
-  async function makeCard(name, message, mum) {
+  async function makeCard(opts) {
     try { await Promise.all([
       document.fonts.load('700 104px "Cormorant Garamond"'),
       document.fonts.load('italic 500 50px "Cormorant Garamond"'),
       document.fonts.load("600 54px Inter")
     ]); } catch {}
-    // Görsel yüklenemezse ya da (dosyadan açınca) tuval kilitlenirse arka plansız çiz
-    try { return await drawCard(name, message, true, mum); }
-    catch { return drawCard(name, message, false, mum); }
+    // Fotoğraf yüklenemezse ya da (dosyadan açınca) tuval kilitlenirse fotoğrafsız çiz
+    try { return await drawCard(opts, true); }
+    catch (e) { console.warn("Fotoğraf çizilemedi:", e); return drawCard(opts, false); }
+  }
+
+  const shareText = () =>
+    `Atatürk'ün aziz hatırasına ${share.mum ? "bir mum yaktım" : "bir karanfil bıraktım"}. Sen de katıl:`;
+
+  function note(text) { $("shareNote").textContent = text; }
+
+  async function refreshCard() {
+    const blob = await makeCard(share);
+    if (share.url) URL.revokeObjectURL(share.url);
+    const fname = `${share.mum ? "mum" : "karanfil"}-ataturk.png`;
+    share.file = new File([blob], fname, { type: "image/png" });
+    share.url = URL.createObjectURL(blob);
+    $("sharePreview").src = share.url;
+    $("downloadBtn").href = share.url;
+    $("downloadBtn").download = fname;
+    $("shareNative").hidden = !(navigator.canShare && navigator.canShare({ files: [share.file] }));
   }
 
   function closeShare() {
     modal.hidden = true;
-    if (shareUrl) URL.revokeObjectURL(shareUrl);
-    shareUrl = null; shareFile = null;
+    if (share.url) URL.revokeObjectURL(share.url);
+    share.url = null; share.file = null;
     btn.focus();
   }
 
   async function openShare(name, message, k) {
-    const mum = k === "mum";
+    Object.assign(share, { name, message, mum: k === "mum" });
     try {
-      const blob = await makeCard(name, message, mum);
-      $("shareTitle").textContent = mum ? "Mumunuz yakıldı" : "Karanfiliniz bırakıldı";
-      const fname = mum ? "mum-ataturk.png" : "karanfil-ataturk.png";
-      shareFile = new File([blob], fname, { type: "image/png" });
-      $("downloadBtn").download = fname;
-      shareUrl = URL.createObjectURL(blob);
-      $("sharePreview").src = shareUrl;
-      $("downloadBtn").href = shareUrl;
-      $("shareBtn").hidden = !(navigator.canShare && navigator.canShare({ files: [shareFile] }));
+      $("shareTitle").textContent = share.mum ? "Mumunuz yakıldı" : "Karanfiliniz bırakıldı";
+      note("");
+      await refreshCard();
       modal.hidden = false;
       $("shareClose").focus();
     } catch (e) {
@@ -351,15 +394,32 @@
     }
   }
 
-  $("shareBtn").addEventListener("click", async () => {
-    try {
-      await navigator.share({
-        files: [shareFile],
-        title: "Ebedi Saygı ve Minnetle",
-        text: `Atatürk'ün aziz hatırasına ${shareFile.name.includes("mum") ? "bir mum yaktım" : "bir karanfil bıraktım"}. Sen de katıl: https://${SITE}/`
-      });
-    } catch {}
+  const canShareFile = () => navigator.canShare && share.file && navigator.canShare({ files: [share.file] });
+  const nativeShare = () => navigator.share({ files: [share.file], text: `${shareText()} ${SITE_URL}` });
+  const openUrl = url => window.open(url, "_blank", "noopener");
+  const enc = encodeURIComponent;
+
+  $("shareWhatsapp").addEventListener("click", () =>
+    openUrl(`https://wa.me/?text=${enc(`${shareText()} ${SITE_URL}`)}`));
+
+  $("shareX").addEventListener("click", () =>
+    openUrl(`https://x.com/intent/post?text=${enc(shareText())}&url=${enc(SITE_URL)}`));
+
+  $("shareThreads").addEventListener("click", () =>
+    openUrl(`https://www.threads.net/intent/post?text=${enc(`${shareText()} ${SITE_URL}`)}`));
+
+  // Instagram'ın internet sitelerinden paylaşım bağlantısı yok:
+  // telefonda görseli paylaşım menüsüne gönderiyoruz, bilgisayarda indiriyoruz.
+  $("shareInstagram").addEventListener("click", async () => {
+    if (canShareFile()) {
+      try { await nativeShare(); } catch {}
+      return;
+    }
+    $("downloadBtn").click();
+    note("Görsel indirildi. Instagram'da + → Hikâye ile paylaşabilirsin.");
   });
+
+  $("shareNative").addEventListener("click", async () => { try { await nativeShare(); } catch {} });
   $("shareClose").addEventListener("click", closeShare);
   modal.addEventListener("click", e => { if (e.target === modal) closeShare(); });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !modal.hidden) closeShare(); });

@@ -7,7 +7,6 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 **📷 Instagram:** [@mmustafager_](https://www.instagram.com/mmustafager_/)
 
 
-
 ---
 
 ## ✨ Özellikler
@@ -23,7 +22,8 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 - 📢 **Siren:** İsteğe bağlı olarak saygı duruşunda bir dakikalık siren çalar. Ses dosyası kullanılmaz, ses tarayıcıda üretilir.
 
 **Paylaşım**
-- 📱 **Hikâye görseli:** Karanfil bırakınca kişinin adı ve mesajıyla 1080×1920 boyutunda bir görsel oluşur. Telefonda doğrudan paylaşılabilir, bilgisayarda indirilebilir.
+- 📱 **Paylaşım görseli:** Karanfil bırakınca kişinin adı ve mesajıyla Instagram hikâyesi boyutunda (1080×1920) bir görsel oluşur.
+- 📤 **Tek tıkla paylaşım:** WhatsApp, Instagram, Threads ve X butonları. Instagram için telefonda görsel doğrudan paylaşım menüsüne gider, bilgisayarda indirilir.
 - 🔗 **Bağlantı önizlemesi:** Link WhatsApp, X, Telegram ve benzerlerinde paylaşıldığında görsel, başlık ve açıklamayla görünür.
 
 **İçerik**
@@ -47,6 +47,7 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 ├── main.js         # Karanfil/mum, bahçe, geri sayım, siren, paylaşım
 ├── filtre.js       # Küfür ve spam filtresi
 ├── atatürk.png     # Arka plan görseli
+├── paylasim-foto.js  # Paylaşım görselinin fotoğrafı (gömülü)
 └── LICENSE
 ```
 
@@ -64,7 +65,7 @@ python3 -m http.server 8000
 
 Ardından tarayıcıda `http://localhost:8000` adresini aç.
 
-> `index.html` dosyasına çift tıklayarak da açabilirsin, ama bu durumda paylaşım görseli arka plansız oluşur. Bu, tarayıcıların bir güvenlik kuralından kaynaklanır.
+> `index.html` dosyasına çift tıklayarak da açabilirsin; her şey çalışır.
 
 ### Saygı duruşunu denemek
 
@@ -103,6 +104,7 @@ Kelimeleri Türkçe karakter ve harf tekrarı olmadan yaz (ör. `götveren` yeri
 - **Web Audio API**: siren sesi
 - **Canvas API** ve **Web Share API**: paylaşım görseli
 - **GitHub Pages**: barındırma
+- Uygulama logoları: [Simple Icons](https://simpleicons.org) (CC0)
 - Yazı tipleri: [Cormorant Garamond](https://fonts.google.com/specimen/Cormorant+Garamond) ve [Inter](https://fonts.google.com/specimen/Inter) (Google Fonts)
 
 ---

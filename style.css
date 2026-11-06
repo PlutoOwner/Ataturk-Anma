@@ -27,7 +27,7 @@ body {
 .bg {
   position: fixed;
   inset: -4%;
-  background: url("atatürk.png") center 30% / cover no-repeat;
+  background: url("ataturk.png") center 30% / cover no-repeat;
   filter: grayscale(.25) sepia(.2);
   animation: drift 40s ease-in-out infinite alternate;
   z-index: -2;
@@ -294,7 +294,7 @@ input[aria-invalid="true"] { border-color: var(--red-soft); animation: shake .35
 }
 .modal__box {
   position: relative;
-  width: min(380px, 100%);
+  width: min(400px, 100%);
   max-height: 100%;
   overflow-y: auto;
   text-align: center;
@@ -312,11 +312,34 @@ input[aria-invalid="true"] { border-color: var(--red-soft); animation: shake .35
 }
 .modal__x:hover { color: var(--ink); }
 .modal__img {
-  display: block; width: 100%; max-height: 52vh; object-fit: contain;
+  display: block; width: 100%; max-height: 50vh; object-fit: contain;
   margin: 1rem auto; border-radius: 12px; border: 1px solid var(--line);
   background: #0b0907;
 }
-.modal__actions { display: grid; gap: .5rem; }
+.modal__actions { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: .5rem; }
+
+.seg { display: grid; grid-template-columns: 1fr 1fr; gap: .4rem; margin-top: 1rem; padding: .3rem; border: 1px solid var(--line); border-radius: 12px; }
+.seg label { margin: 0; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg span { display: block; padding: .45rem; border-radius: 8px; font-size: .9rem; font-weight: 500; color: var(--muted); transition: background .2s, color .2s; }
+.seg small { opacity: .7; font-weight: 400; }
+.seg input:checked + span { background: rgba(255,255,255,.1); color: var(--ink); }
+.seg input:focus-visible + span { outline: 2px solid var(--gold); }
+
+.social { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; }
+.social__btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .55rem;
+  font: inherit; font-weight: 600; font-size: .95rem; color: #fff;
+  border: 0; border-radius: 10px; padding: .75rem .5rem; cursor: pointer;
+  transition: transform .15s, filter .2s;
+}
+.social__btn:hover { transform: translateY(-1px); filter: brightness(1.12); }
+.social__btn--wa { background: #1fa855; }
+.social__btn--ig { background: linear-gradient(45deg, #f09433, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888); }
+.social__btn--th { background: #101010; border: 1px solid rgba(255,255,255,.25); }
+.social__btn--x  { background: #000; border: 1px solid rgba(255,255,255,.25); }
+.social__btn svg { width: 20px; height: 20px; flex: none; }
+.share-note { min-height: 1.2em; margin: .6rem 0 .4rem; font-size: .82rem; color: var(--gold); }
 .modal__actions .btn--ghost { margin: 0; text-decoration: none; color: var(--ink); }
 
 /* ---------- Mum (saf CSS) ---------- */
