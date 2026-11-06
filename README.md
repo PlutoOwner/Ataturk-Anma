@@ -5,7 +5,7 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 
 **🌐 Canlı site:** https://plutoowner.github.io/Ataturk-Anma/
 
-![Site önizlemesi](onizleme.jpg)
+
 
 ---
 
