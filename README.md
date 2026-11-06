@@ -47,7 +47,6 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 ├── filtre.js       # Küfür ve spam filtresi
 ├── og-image.jpg    # Bağlantı önizleme görseli (1200×630)
 ├── atatürk.png     # Arka plan görseli
-├── onizleme.jpg    # README ekran görüntüsü
 └── LICENSE
 ```
 
