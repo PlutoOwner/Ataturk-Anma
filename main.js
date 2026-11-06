@@ -1,5 +1,6 @@
 (() => {
-  const $ = id => document.getElementById(id);
+  // Eleman bulunamazsa (ör. index.html eski kaldıysa) kod durmasın diye boş bir yedek döner
+  const $ = id => document.getElementById(id) || (console.warn(`#${id} bulunamadı; index.html güncel mi?`), document.createElement("div"));
   const STORAGE_KEY = "carnations";
   const PAGE = 20;
   const COOLDOWN_MS = 30_000;
@@ -92,7 +93,7 @@
   const err = $("formError");
   const btn = $("dropCarnationBtn");
 
-  const kind = () => form.querySelector('input[name="kind"]:checked').value;
+  const kind = () => form.querySelector('input[name="kind"]:checked')?.value || "karanfil";
   function updateButton() {
     const mum = kind() === "mum";
     $("btnLabel").textContent = mum ? "Mum Yak" : "Karanfil Bırak";
@@ -166,7 +167,8 @@
     render(true);
     list.scrollTop = 0;
     form.reset();
-    form.querySelector(`input[value="${k}"]`).checked = true;   // seçimi koru
+    const radio = form.querySelector(`input[value="${k}"]`);
+    if (radio) radio.checked = true;                              // seçimi koru
     updateCount();
     err.textContent = "";
 
