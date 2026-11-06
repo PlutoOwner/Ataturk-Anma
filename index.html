@@ -3,174 +3,216 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ebedi Saygı Anıtı - Parallax Versiyon</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap');
-    body {
-      font-family: 'Inter', sans-serif;
-      color: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      padding: 2rem;
-      overflow-x: hidden;
-      position: relative;
-    }
+  <title>Ebedi Saygı ve Minnetle · Atatürk Anma</title>
+  <meta name="description" content="Ulu Önder Mustafa Kemal Atatürk'ün aziz hatırasına dijital anma sayfası. Bir karanfil bırakın, saygılarınızı sunun.">
+  <meta name="theme-color" content="#0b0907">
+  <link rel="canonical" href="https://plutoowner.github.io/Ataturk-Anma/">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath d='M32 34v28' stroke='%234c7d45' stroke-width='4'/%3E%3Cpath d='M6 14l5-9 4 6 5-10 4 8 4-9 4 9 4-8 4 9 5-10 4 6 5 9c-4 14-17 20-26 20S10 28 6 14z' fill='%23e30a17'/%3E%3C/svg%3E">
 
-    /* 🔥 Parallax efektli arka plan */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: url('Gemini_Generated_Image_ec6i10ec6i10ec6i.png') center/cover no-repeat;
-      animation: parallaxMove 60s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes parallaxMove {
-      0% { background-position: center top; }
-      50% { background-position: center bottom; }
-      100% { background-position: center top; }
-    }
-
-    /* Hafif karartma efekti */
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.35);
-      z-index: 0;
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      backdrop-filter: blur(6px);
-    }
-
-    .carnation-effect {
-      position: fixed;
-      font-size: 2rem;
-      animation: flyUp 2s ease-out forwards;
-      pointer-events: none;
-      z-index: 50;
-    }
-
-    @keyframes flyUp {
-      0% {opacity: 1; transform: translateY(0);}
-      100% {opacity: 0; transform: translateY(-150px);}
-    }
-
-    #carnationList::-webkit-scrollbar {
-      width: 6px;
-    }
-    #carnationList::-webkit-scrollbar-thumb {
-      background: #e30a17;
-      border-radius: 3px;
-    }
-
-    .bg-panel {
-      background: rgba(0, 0, 0, 0.55);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-    }
-  </style>
+  <!-- Paylaşım önizlemesi (WhatsApp, X, Facebook, Telegram, LinkedIn) -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="tr_TR">
+  <meta property="og:site_name" content="Atatürk Anma">
+  <meta property="og:url" content="https://plutoowner.github.io/Ataturk-Anma/">
+  <meta property="og:title" content="Ebedi Saygı ve Minnetle · Atatürk Anma">
+  <meta property="og:description" content="Ulu Önder Atatürk'ün aziz hatırasına bir karanfil bırakın, saygılarınızı sunun.">
+  <meta property="og:image" content="https://plutoowner.github.io/Ataturk-Anma/og-image.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Defne çelengi içinde Atatürk portresi ve 'Ebedi Saygı ve Minnetle' yazısı">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ebedi Saygı ve Minnetle · Atatürk Anma">
+  <meta name="twitter:description" content="Ulu Önder Atatürk'ün aziz hatırasına bir karanfil bırakın, saygılarınızı sunun.">
+  <meta name="twitter:image" content="https://plutoowner.github.io/Ataturk-Anma/og-image.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container w-full max-w-3xl bg-panel rounded-xl shadow-2xl p-6 sm:p-10">
-    <header class="text-center mb-8">
-      <h1 class="text-3xl sm:text-4xl font-extrabold text-red-500 drop-shadow-[0_2px_6px_rgba(0,0,0,0.8)]">EBEDİ SAYGI VE MİNNETLE</h1>
-      <div class="h-[2px] w-20 bg-red-600 mx-auto my-3"></div>
-      <p class="text-gray-200">Ulu Önder Mustafa Kemal Atatürk'ün aziz hatırasına</p>
-    </header>
+  <!-- Karanfil simgesi (tek yerde tanımlanır, her yerde kullanılır) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="karanfil" viewBox="0 0 64 120">
+      <path d="M32 58 C31 80 33 98 31 118" stroke="#3f6b3a" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M31 88 C22 80 14 80 8 84 C16 86 24 88 31 92Z" fill="#4c7d45"/>
+      <path d="M32 74 C40 66 48 66 55 69 C47 72 40 74 32 78Z" fill="#4c7d45"/>
+      <path d="M24 46 L32 62 L40 46 Z" fill="#4c7d45"/>
+      <path d="M8 34 L12 26 L15 31 L19 21 L23 28 L27 17 L32 26 L37 17 L41 28 L45 21 L49 31 L52 26 L56 34 C52 46 40 50 32 50 C24 50 12 46 8 34Z" fill="#b5121b"/>
+      <path d="M14 36 L18 29 L21 34 L25 25 L29 31 L32 23 L35 31 L39 25 L43 34 L46 29 L50 36 C46 44 38 46 32 46 C26 46 18 44 14 36Z" fill="#e30a17"/>
+      <path d="M21 38 L25 33 L28 37 L32 30 L36 37 L39 33 L43 38 C40 42 36 43 32 43 C28 43 24 42 21 38Z" fill="#ff3b45" opacity=".85"/>
+    </symbol>
+  </svg>
 
-    <div class="grid gap-4 md:grid-cols-3 mb-8">
-      <div class="bg-white/20 p-4 rounded-lg text-center">
-        <p id="totalCarnations" class="text-2xl font-bold">0</p>
-        <p class="text-sm text-gray-300">Toplam Bırakılan Karanfil</p>
-      </div>
+  <div class="bg" aria-hidden="true"></div>
+  <div class="bg-shade" aria-hidden="true"></div>
 
-      <div class="md:col-span-2 space-y-3">
-        <input id="usernameInput" maxlength="20" placeholder="Adınızı girin (zorunlu)" class="w-full p-3 text-sm rounded-lg bg-white/20 border border-transparent focus:border-red-500 text-white placeholder-gray-300 outline-none">
-        <textarea id="messageInput" maxlength="100" placeholder="Kısa bir mesaj ekleyin (opsiyonel)" class="w-full p-3 text-sm rounded-lg bg-white/20 border border-transparent focus:border-red-500 text-white placeholder-gray-300 outline-none resize-y h-16"></textarea>
-      </div>
-
-      <button id="dropCarnationBtn" class="md:col-span-3 flex items-center justify-center p-3 text-lg font-semibold rounded-lg bg-white text-gray-900 hover:bg-gray-200 transition">
-        🌹 Karanfil Bırak
-      </button>
-    </div>
-
-    <section>
-      <h2 class="text-xl font-bold mb-3 text-red-500">Saygılarını Sunanlar</h2>
-      <div id="carnationList" class="max-h-96 overflow-y-auto bg-white/5 p-4 rounded-lg space-y-3 border-t border-red-500/40"></div>
-    </section>
+  <!-- Saygı duruşu katmanı: 10 Kasım 09.05'te kendiliğinden açılır -->
+  <div id="silence" class="silence" hidden>
+    <p class="silence__time">09.05</p>
+    <p class="silence__text">Saygı duruşu</p>
+    <p class="silence__sub">Bir dakika… Seni minnetle anıyoruz.</p>
+    <button id="silenceMute" class="btn btn--ghost" type="button" hidden>Sireni sustur</button>
   </div>
 
-  <script>
-    const usernameInput = document.getElementById("usernameInput");
-    const messageInput = document.getElementById("messageInput");
-    const dropCarnationBtn = document.getElementById("dropCarnationBtn");
-    const totalCarnationsEl = document.getElementById("totalCarnations");
-    const carnationListEl = document.getElementById("carnationList");
+  <!-- Paylaşım penceresi: karanfil bırakıldıktan sonra açılır -->
+  <div id="shareModal" class="modal" hidden role="dialog" aria-modal="true" aria-labelledby="shareTitle">
+    <div class="modal__box">
+      <button id="shareClose" class="modal__x" type="button" aria-label="Kapat">×</button>
+      <h2 id="shareTitle" class="card__title">Karanfiliniz bırakıldı</h2>
+      <p class="muted small">Hikâyenizde paylaşarak başkalarını da davet edin.</p>
+      <img id="sharePreview" class="modal__img" alt="Paylaşım görseli önizlemesi">
+      <div class="modal__actions">
+        <button id="shareBtn" class="btn" type="button" hidden>Paylaş</button>
+        <a id="downloadBtn" class="btn btn--ghost" download="karanfil-ataturk.png">Görseli indir</a>
+      </div>
+    </div>
+  </div>
 
-    let carnations = JSON.parse(localStorage.getItem("carnations") || "[]");
+  <main class="wrap">
+    <!-- GİRİŞ -->
+    <header class="hero">
+      <p class="eyebrow">10 Kasım 1938 · Dolmabahçe · 09.05</p>
+      <h1>Ebedi Saygı<br>ve Minnetle</h1>
+      <div class="rule"><span></span><svg><use href="#karanfil"/></svg><span></span></div>
+      <p class="lead">Ulu Önder Gazi Mustafa Kemal Atatürk'ün aramızdan ayrılışının
+        <strong id="yearsSince">88.</strong> yılında, aziz hatırası önünde saygıyla eğiliyoruz.</p>
+      <p class="dates" aria-label="1881 – 1938, sonsuza dek">1881 — 193<span class="inf" aria-hidden="true">∞</span></p>
+    </header>
 
-    function saveAndRender() {
-      localStorage.setItem("carnations", JSON.stringify(carnations));
-      renderList();
-    }
+    <!-- GERİ SAYIM -->
+    <section class="card countdown" aria-labelledby="cdTitle">
+      <h2 id="cdTitle" class="card__title">Saygı duruşuna kalan süre</h2>
+      <div class="cd" role="timer" aria-live="off">
+        <div><b id="cdD">0</b><span>gün</span></div>
+        <div><b id="cdH">00</b><span>saat</span></div>
+        <div><b id="cdM">00</b><span>dakika</span></div>
+        <div><b id="cdS">00</b><span>saniye</span></div>
+      </div>
+      <p class="muted small">Her yıl 10 Kasım saat 09.05'te, sayfa açıksa ekran bir dakikalığına kararır.</p>
+      <button id="sirenToggle" class="btn btn--ghost siren" type="button" aria-pressed="false">
+        <span class="siren__dot"></span><span id="sirenLabel">Saygı duruşunda siren çalsın</span>
+      </button>
+      <p id="sirenNote" class="muted small" hidden>Siren açık. Saat 09.05'te çalması için bu sayfa açık kalmalı ve cihazın sesi açık olmalı.</p>
+    </section>
 
-    function renderList() {
-      carnationListEl.innerHTML = "";
-      if (carnations.length === 0) {
-        carnationListEl.innerHTML = '<p class="text-center text-gray-400">İlk karanfili bırakan siz olun.</p>';
-      } else {
-        totalCarnationsEl.textContent = carnations.length;
-        carnations.slice().reverse().forEach(item => {
-          const el = document.createElement("div");
-          el.className = "p-3 rounded-lg bg-white/10 border-l-4 border-red-500";
-          el.innerHTML = `
-            <div class="flex justify-between items-center">
-              <div class="flex items-center gap-2"><span>🌹</span><span class="font-semibold">${item.username}</span></div>
-              <span class="text-xs text-gray-400">${item.time}</span>
-            </div>
-            ${item.message ? `<p class="text-sm italic text-gray-300 mt-1">"${item.message}"</p>` : ""}
-          `;
-          carnationListEl.appendChild(el);
-        });
-      }
-    }
+    <!-- KARANFİL BIRAK -->
+    <section class="card offer" aria-labelledby="offerTitle">
+      <div class="offer__count">
+        <svg class="offer__flower"><use href="#karanfil"/></svg>
+        <p><b id="totalCarnations">0</b></p>
+        <p class="muted small">karanfil bırakıldı</p>
+        <p class="offer__candles"><span class="candle candle--sm" aria-hidden="true"></span><b id="totalCandles">0</b> <span class="muted small">mum yakıldı</span></p>
+      </div>
 
-    function createCarnationEffect() {
-      const el = document.createElement("div");
-      el.className = "carnation-effect";
-      el.textContent = "🌹";
-      el.style.left = (window.innerWidth / 2 - 10 + Math.random() * 50 - 25) + "px";
-      el.style.top = (window.innerHeight - 150) + "px";
-      document.body.appendChild(el);
-      el.addEventListener("animationend", () => el.remove());
-    }
+      <form id="carnationForm" class="offer__form" novalidate>
+        <h2 id="offerTitle" class="card__title">Saygılarınızı sunun</h2>
 
-    dropCarnationBtn.addEventListener("click", () => {
-      const username = usernameInput.value.trim();
-      const message = messageInput.value.trim();
-      if (username.length < 2) {
-        usernameInput.classList.add("border-red-500");
-        setTimeout(() => usernameInput.classList.remove("border-red-500"), 1500);
-        return;
-      }
-      const now = new Date();
-      const time = now.toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" });
-      carnations.push({ username, message, time });
-      usernameInput.value = "";
-      messageInput.value = "";
-      createCarnationEffect();
-      saveAndRender();
-    });
+        <div class="choice" role="radiogroup" aria-label="Ne bırakmak istersiniz?">
+          <label><input type="radio" name="kind" value="karanfil" checked><span><svg><use href="#karanfil"/></svg>Karanfil bırak</span></label>
+          <label><input type="radio" name="kind" value="mum"><span><i class="candle candle--sm" aria-hidden="true"></i>Mum yak</span></label>
+        </div>
 
-    renderList();
-  </script>
+        <label for="usernameInput">Adınız</label>
+        <input id="usernameInput" maxlength="20" autocomplete="given-name" placeholder="Örn. Ayşe" required>
+
+        <label for="messageInput">Mesajınız <span class="muted">(isteğe bağlı)</span></label>
+        <textarea id="messageInput" maxlength="100" rows="2" placeholder="Kısa bir mesaj yazın ya da aşağıdan seçin"></textarea>
+        <div class="row">
+          <div class="chips" id="chips">
+            <button type="button">İzindeyiz.</button>
+            <button type="button">Rahat uyu Paşam.</button>
+            <button type="button">Minnetle anıyoruz.</button>
+            <button type="button">Cumhuriyet emanetindir.</button>
+          </div>
+          <span id="charCount" class="muted small">0/100</span>
+        </div>
+
+        <p id="formError" class="error" role="alert"></p>
+        <button id="dropCarnationBtn" class="btn" type="submit">
+          <span id="btnIcon"><svg><use href="#karanfil"/></svg></span> <span id="btnLabel">Karanfil Bırak</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- ANMA BAHÇESİ -->
+    <section class="card" aria-labelledby="gardenTitle">
+      <div class="row">
+        <h2 id="gardenTitle" class="card__title">Anma bahçesi</h2>
+        <span class="muted small">Her karanfil ve her mum burada</span>
+      </div>
+      <div id="garden" class="garden" aria-label="Bırakılan karanfiller ve yakılan mumlar"></div>
+    </section>
+
+    <!-- SAYGI DUVARI -->
+    <section class="card" aria-labelledby="wallTitle">
+      <div class="row">
+        <h2 id="wallTitle" class="card__title">Saygılarını sunanlar</h2>
+        <span class="muted small">En yeniler üstte</span>
+      </div>
+      <ul id="carnationList" class="wall"></ul>
+      <button id="moreBtn" class="btn btn--ghost" type="button" hidden>Daha fazla göster</button>
+    </section>
+
+    <!-- SÖZLER -->
+    <section class="quote" aria-label="Atatürk'ten sözler">
+      <blockquote id="quoteText">“Hayatta en hakiki mürşit ilimdir.”</blockquote>
+      <p class="quote__by">— Mustafa Kemal Atatürk</p>
+    </section>
+
+    <!-- GENÇLİĞE HİTABE -->
+    <section class="card hitabe" aria-labelledby="hitabeTitle">
+      <h2 id="hitabeTitle" class="card__title">Gençliğe Hitabe</h2>
+      <p class="muted small">20 Ekim 1927 · Nutuk'un son sözleri</p>
+      <div class="hitabe__text">
+        <p class="hitabe__first">Ey Türk gençliği! Birinci vazifen, Türk istiklâlini, Türk Cumhuriyetini, ilelebet muhafaza ve müdafaa etmektir.</p>
+        <details id="hitabeMore">
+          <summary>Devamını oku</summary>
+          <p>Mevcudiyetinin ve istikbalinin yegâne temeli budur. Bu temel, senin en kıymetli hazinendir. İstikbalde dahi, seni bu hazineden mahrum etmek isteyecek dahilî ve haricî bedhahların olacaktır. Bir gün, istiklâl ve cumhuriyeti müdafaa mecburiyetine düşersen, vazifeye atılmak için, içinde bulunacağın vaziyetin imkân ve şeraitini düşünmeyeceksin! Bu imkân ve şerait, çok namüsait bir mahiyette tezahür edebilir. İstiklâl ve cumhuriyetine kastedecek düşmanlar, bütün dünyada emsali görülmemiş bir galibiyetin mümessili olabilirler. Cebren ve hile ile aziz vatanın bütün kaleleri zaptedilmiş, bütün tersanelerine girilmiş, bütün orduları dağıtılmış ve memleketin her köşesi bilfiil işgal edilmiş olabilir. Bütün bu şeraitten daha elîm ve daha vahim olmak üzere, memleketin dahilinde iktidara sahip olanlar gaflet ve dalâlet ve hattâ hıyanet içinde bulunabilirler. Hattâ bu iktidar sahipleri şahsî menfaatlerini, müstevlilerin siyasî emelleriyle tevhit edebilirler. Millet, fakr u zaruret içinde harap ve bîtap düşmüş olabilir.</p>
+          <p>Ey Türk istikbalinin evlâdı! İşte, bu ahval ve şerait içinde dahi vazifen, Türk istiklâl ve cumhuriyetini kurtarmaktır. Muhtaç olduğun kudret, damarlarındaki asil kanda mevcuttur.</p>
+          <p class="hitabe__sign">Gazi Mustafa Kemal</p>
+
+          <h3 class="hitabe__glossTitle">Bazı kelimelerin anlamları</h3>
+          <dl class="gloss">
+            <div><dt>bedhah</dt><dd>kötülük isteyen</dd></div>
+            <div><dt>şerait</dt><dd>şartlar</dd></div>
+            <div><dt>namüsait</dt><dd>elverişsiz</dd></div>
+            <div><dt>mümessil</dt><dd>temsilci</dd></div>
+            <div><dt>cebren</dt><dd>zorla</dd></div>
+            <div><dt>bilfiil</dt><dd>fiilen, gerçekten</dd></div>
+            <div><dt>elîm</dt><dd>acı veren</dd></div>
+            <div><dt>dalâlet</dt><dd>doğru yoldan sapma</dd></div>
+            <div><dt>müstevli</dt><dd>istilacı</dd></div>
+            <div><dt>tevhit</dt><dd>birleştirme</dd></div>
+            <div><dt>fakr u zaruret</dt><dd>yoksulluk ve sıkıntı</dd></div>
+            <div><dt>bîtap</dt><dd>yorgun, güçsüz</dd></div>
+            <div><dt>ahval</dt><dd>durumlar, hâller</dd></div>
+          </dl>
+        </details>
+      </div>
+    </section>
+
+    <!-- HAYATI -->
+    <section class="card" aria-labelledby="lifeTitle">
+      <h2 id="lifeTitle" class="card__title">Hayatından kilometre taşları</h2>
+      <ol class="timeline">
+        <li><time>1881</time><p>Selanik'te dünyaya geldi.</p></li>
+        <li><time>19 Mayıs 1919</time><p>Samsun'a çıkarak Millî Mücadele'yi başlattı.</p></li>
+        <li><time>23 Nisan 1920</time><p>Türkiye Büyük Millet Meclisi Ankara'da açıldı.</p></li>
+        <li><time>30 Ağustos 1922</time><p>Başkomutanlık Meydan Muharebesi zaferle sonuçlandı.</p></li>
+        <li><time>29 Ekim 1923</time><p>Cumhuriyet ilan edildi; ilk Cumhurbaşkanı seçildi.</p></li>
+        <li><time>1 Kasım 1928</time><p>Yeni Türk alfabesi kabul edildi.</p></li>
+        <li><time>5 Aralık 1934</time><p>Türk kadınına milletvekili seçme ve seçilme hakkı tanındı.</p></li>
+        <li><time>10 Kasım 1938</time><p>İstanbul Dolmabahçe Sarayı'nda hayata gözlerini yumdu.</p></li>
+      </ol>
+    </section>
+
+    <footer class="foot">
+      <p>“Benim naçiz vücudum elbet bir gün toprak olacaktır; fakat Türkiye Cumhuriyeti ilelebet payidar kalacaktır.”</p>
+      <p class="muted small">Atatürk Anma · Açık kaynak · <a href="https://github.com/plutoowner/Ataturk-Anma">GitHub</a></p>
+    </footer>
+  </main>
+
+  <script src="filtre.js"></script>
+  <script src="main.js"></script>
 </body>
 </html>
