@@ -4,6 +4,7 @@ Ulu Önder Gazi Mustafa Kemal Atatürk'ün aziz hatırasına saygı ve minnetimi
 Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa bir mesajlarını ekleyip bunu **hikâyelerinde paylaşabilirler**.
 
 **🌐 Canlı site:** https://plutoowner.github.io/Ataturk-Anma/
+**📷 Instagram:** [@mmustafager_](https://www.instagram.com/mmustafager_/)
 
 
 
@@ -45,7 +46,6 @@ Ziyaretçiler **karanfil bırakabilir**, **mum yakabilir**, adlarını ve kısa 
 ├── style.css       # Tüm tasarım
 ├── main.js         # Karanfil/mum, bahçe, geri sayım, siren, paylaşım
 ├── filtre.js       # Küfür ve spam filtresi
-├── og-image.jpg    # Bağlantı önizleme görseli (1200×630)
 ├── atatürk.png     # Arka plan görseli
 └── LICENSE
 ```
@@ -115,7 +115,7 @@ Kelimeleri Türkçe karakter ve harf tekrarı olmadan yaz (ör. `götveren` yeri
 4. Dalını gönder: `git push origin feature/yeni-ozellik`
 5. Pull request aç
 
-Hata bildirmek ya da öneride bulunmak için [Issues](https://github.com/plutoowner/Ataturk-Anma/issues) sekmesini kullanabilirsin.
+Hata bildirmek ya da öneride bulunmak için [Issues](https://github.com/plutoowner/Ataturk-Anma/issues) sekmesini kullanabilir ya da Instagram'dan [@mmustafager_](https://www.instagram.com/mmustafager_/) hesabına yazabilirsin.
 
 ---
 
